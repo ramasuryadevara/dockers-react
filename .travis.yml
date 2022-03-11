@@ -2,7 +2,19 @@ language: generic
 sudo: required
 services:
   - docker
-befor_install:
-  - docker build -t rama8829/dockers-react -f Dockerfile.dev .
+befor_install: docker-compose -f docker-compose-dev.yml up
+  docker-compose -f docker-compose-dev.yml up --build
+  docker-compose -f docker-compose-dev.yml down
 script:
   - docker run -e CI=true rama8829/dockers-react npm run test
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  app: docker
+  env: "Dockerreact-env"
+  bucket_name: "elasticbeanstalk-us-east-1-137486215264"
+  bucket_path: "docker"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
