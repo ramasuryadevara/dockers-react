@@ -1,0 +1,8 @@
+language: generic
+sudo: required
+services:
+  - docker
+befor_install:
+  - docker build -t rama8829/dockers-react -f Dockerfile.dev .
+script:
+  - docker run -e CI=true USERNAME/docker-react npm run test
